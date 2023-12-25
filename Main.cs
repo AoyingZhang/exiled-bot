@@ -4,6 +4,7 @@ using Discord;
 using Discord.WebSocket;
 using Discord.Commands;
 using Microsoft.Extensions.DependencyInjection;
+using DotNetEnv;
 
 namespace Discord_Bot
 {
@@ -14,6 +15,8 @@ namespace Discord_Bot
 
         public async Task MainAsync()
         {
+            DotNetEnv.Env.Load();
+
             using var services = ConfigureServices();
 
             Console.WriteLine("Ready for takeoff...");
@@ -23,7 +26,8 @@ namespace Discord_Bot
             services.GetRequiredService<CommandService>().Log += Log;
 
             // Log in to Discord and start the bot.
-            await client.LoginAsync(TokenType.Bot, "MTE4ODYwNTg2NTkwNTg5NzYzNQ.GYphRz.RHBjzfy_2o8x0RgpjW4iz8L_U6njxDNR5VmLL4");
+            string discordToken = Environment.GetEnvironmentVariable("DISCORDTOKEN");
+            await client.LoginAsync(TokenType.Bot, discordToken);
             await client.StartAsync();
 
             await services.GetRequiredService<CommandHandlingService>().InitializeAsync();
