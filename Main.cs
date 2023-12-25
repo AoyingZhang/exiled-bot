@@ -42,7 +42,8 @@ namespace Discord_Bot
                 .AddSingleton(new DiscordSocketClient(new DiscordSocketConfig
                 { 
                     MessageCacheSize = 500,
-                    LogLevel = LogSeverity.Info
+                    LogLevel = LogSeverity.Info,
+                    GatewayIntents = GatewayIntents.All
                 }))
                 .AddSingleton(new CommandService(new CommandServiceConfig
                 { 

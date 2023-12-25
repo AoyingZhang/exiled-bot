@@ -32,6 +32,7 @@ namespace Discord_Bot
         
         private async Task HandleCommandAsync(SocketMessage rawMessage)
         {
+            DotNetEnv.Env.Load();
             if (rawMessage.Author.IsBot || !(rawMessage is SocketUserMessage message) || message.Channel is IDMChannel)
                 return;
 
@@ -39,11 +40,13 @@ namespace Discord_Bot
 
             int argPos = 0;
 
-            JObject config = Functions.GetConfig();
-            string[] prefixes = JsonConvert.DeserializeObject<string[]>(config["prefixes"].ToString());
-
+            //JObject config = Functions.GetConfig();
+            //string[] prefixes = JsonConvert.DeserializeObject<string[]>(config["prefixes"].ToString());
+            //string prefix = Environment.GetEnvironmentVariable("PREFIX");
+            string prefix = "!";
             // Check if message has any of the prefixes or mentiones the bot.
-            if (prefixes.Any(x => message.HasStringPrefix(x, ref argPos)) || message.HasMentionPrefix(_client.CurrentUser, ref argPos))
+            //if (prefixes.Any(x => message.HasStringPrefix(x, ref argPos)) || message.HasMentionPrefix(_client.CurrentUser, ref argPos))
+            if (message.HasStringPrefix(prefix, ref argPos) || message.HasMentionPrefix(_client.CurrentUser, ref argPos))
             {
                 // Execute the command.
                 var result = await _commands.ExecuteAsync(context, argPos, _services);

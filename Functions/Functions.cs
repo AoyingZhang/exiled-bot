@@ -1,10 +1,12 @@
 using Discord;
 using Discord.WebSocket;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using DotNetEnv;
+using Newtonsoft.Json.Linq;
+using System.Linq;
+using Newtonsoft.Json;
 
 namespace Discord_Bot
 {
@@ -12,11 +14,11 @@ namespace Discord_Bot
     {
         public static async Task SetBotStatusAsync(DiscordSocketClient client)
         {
-            JObject config = GetConfig();
+            DotNetEnv.Env.Load();
 
-            string currently = config["currently"]?.Value<string>().ToLower();
-            string statusText = config["playing_status"]?.Value<string>();
-            string onlineStatus = config["status"]?.Value<string>().ToLower();
+            string currently = Environment.GetEnvironmentVariable("ACTIVITY_STATUS");
+            string statusText = Environment.GetEnvironmentVariable("ACTIVITY_TEXT");
+            string onlineStatus = Environment.GetEnvironmentVariable("ACTIVITY_ONLINE_TYPE");
 
             // Set the online status
             if (!string.IsNullOrEmpty(onlineStatus))
